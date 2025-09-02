@@ -1,0 +1,94 @@
+# Headscale Configuration v0.26.1
+# Self-hosted Tailscale control server configuration
+
+# Server configuration
+server_url: https://your-headscale-server.ts.net  # Replace with your Tailscale hostname
+listen_addr: 0.0.0.0:8080
+grpc_listen_addr: 0.0.0.0:50443
+
+# API configuration
+grpc_allow_insecure: false
+private_key_path: /var/lib/headscale/private.key
+noise:
+  private_key_path: /var/lib/headscale/noise_private.key
+
+# IP prefix configuration for your tailnet
+prefixes:
+  v4: 100.64.0.0/10
+  v6: fd7a:115c:a1e0::/48
+
+# Database configuration
+database:
+  type: sqlite3
+  sqlite:
+    path: /var/lib/headscale/db.sqlite
+
+# DERP (relay) configuration
+derp:
+  server:
+    enabled: false
+  urls:
+    - https://controlplane.tailscale.com/derpmap/default
+  paths: []
+  auto_update_enabled: true
+  update_frequency: 24h
+
+# Disable Tailscale's coordination server
+disable_check_updates: true
+ephemeral_node_inactivity_timeout: 30m
+node_update_check_interval: 10s
+
+# DNS configuration
+dns:
+  magic_dns: true
+  base_domain: ts.net
+  nameservers:
+    - 1.1.1.1
+    - 8.8.8.8
+  extra_records: []
+  search_domains: []
+
+# Logging
+log:
+  format: text
+  level: info
+
+# Policy configuration (optional)
+# Uncomment to use custom ACL policies
+# policy:
+#   mode: file
+#   path: /etc/headscale/policy.hujson
+
+# TLS configuration (handled by Tailscale Funnel)
+tls_letsencrypt_hostname: ""
+tls_letsencrypt_challenge_type: ""
+tls_letsencrypt_listen: ""
+tls_cert_path: ""
+tls_key_path: ""
+
+# CLI configuration
+cli:
+  insecure: false
+  api_key: ""
+  timeout: 5s
+
+# OpenID Connect (optional)
+# Uncomment to enable OIDC authentication
+# oidc:
+#   only_start_if_oidc_is_available: true
+#   issuer: "https://your-oidc-provider.com"
+#   client_id: "your-client-id"
+#   client_secret: "your-client-secret"
+#   scope: ["openid", "profile", "email"]
+#   extra_params: {}
+#   allowed_domains: []
+#   allowed_groups: []
+#   strip_email_domain: true
+
+# Logtail configuration (optional)
+# Uncomment to enable log forwarding
+# logtail:
+#   enabled: false
+
+# Randomize client port
+randomize_client_port: false

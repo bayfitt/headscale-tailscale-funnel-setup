@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  tailscale-client:
+    build: .
+    container_name: headscale-test-client
+    privileged: true  # Required for tailscaled to manage network interfaces
+    network_mode: host  # Access to host networking for testing
+    volumes:
+      - tailscale-data:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun  # TUN device access
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY:-}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  tailscale-data:

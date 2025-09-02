@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  headscale:
+    image: headscale/headscale:v0.26.1
+    container_name: headscale
+    restart: unless-stopped
+    command: headscale serve
+    volumes:
+      - ./headscale-config:/etc/headscale
+      - ./headscale-data:/var/lib/headscale
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:50443:50443"
+    environment:
+      - TZ=UTC
+    networks:
+      - headscale-net
+
+  headplane:
+    image: ghcr.io/tale/headplane:0.3.0
+    container_name: headplane
+    restart: unless-stopped
+    ports:
+      # Replace 100.104.140.111 with your actual Tailscale IP
+      - '100.104.140.111:3000:3000'
+    environment:
+      - HEADSCALE_URL=http://headscale:8080
+      - COOKIE_SECRET=headplanecookiesecret32characters
+      - TZ=UTC
+    volumes:
+      - ./headplane-data:/var/lib/headplane
+    depends_on:
+      - headscale
+    networks:
+      - headscale-net
+
+networks:
+  headscale-net:
+    driver: bridge
