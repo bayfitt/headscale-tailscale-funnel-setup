@@ -137,9 +137,13 @@ curl -i -H "Connection: Upgrade" -H "Upgrade: websocket" \
 - **iOS Problems**: See `docs/IOS-FIX.md`
 - **Architecture**: See `docs/ARCHITECTURE.md`
 
+## ⚠️ Important Notes
+
+**Headplane UI Testing Required**: This setup has been tested with Headplane on commercial Tailscale networks. The Headplane UI accessibility on the self-hosted Headscale network still needs validation. In theory, you should only need commercial Tailscale for setting up the funnel on the control server itself.
+
 ## 📝 License
 
-This project is provided as-is for educational and self-hosting purposes.
+MIT License - See [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
